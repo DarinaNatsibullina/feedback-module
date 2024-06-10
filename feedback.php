@@ -1,4 +1,7 @@
 <?php
+require 'config.php';
+require 'generate_csrf_token.php';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     session_start();
 
@@ -20,25 +23,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Некорректные данные формы.");
     }
 
-    $to = "university@example.com"; // Замените на ваш email
-    $subject = "Новое сообщение с обратной связи";
-    $body = "Имя: $name\nEmail: $email\nТелефон: $phone\nТема: $topic\nСообщение:\n$message";
+    // Подключение к базе данных
+    $conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+
+    // Проверка подключения
+    if ($conn->connect_error) {
+        die("Ошибка подключения: " . $conn->connect_error);
+    }
+
+    // Сохранение данных в таблицу users
+    $stmt = $conn->prepare("INSERT INTO users (name, email, phone) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $name, $email, $phone);
+    $stmt->execute();
+    $user_id = $stmt->insert_id;
+    $stmt->close();
+
+    // Получение id темы
+    $stmt = $conn->prepare("SELECT id FROM topics WHERE topic_name = ?");
+    $stmt->bind_param("s", $topic);
+    $stmt->execute();
+    $stmt->bind_result($topic_id);
+    $stmt->fetch();
+    $stmt->close();
 
     // Обработка прикрепленного файла
+    $file_path = null;
     if ($attachment['size'] > 0) {
         $file_path = "uploads/" . basename($attachment["name"]);
         move_uploaded_file($attachment["tmp_name"], $file_path);
-        $body .= "\nПрикрепленный файл: " . $file_path;
     }
 
-    $headers = "From: $email";
+    // Сохранение данных в таблицу feedback
+    $stmt = $conn->prepare("INSERT INTO feedback (user_id, topic_id, message, attachment) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("iiss", $user_id, $topic_id, $message, $file_path);
+    $stmt->execute();
+    $stmt->close();
 
-    // Отправка email
-    if (mail($to, $subject, $body, $headers)) {
-        echo "Сообщение успешно отправлено.";
-    } else {
-        echo "Ошибка при отправке сообщения.";
-    }
+    $conn->close();
+
+    echo "Сообщение успешно отправлено.";
 } else {
     echo "Некорректный метод запроса.";
 }
