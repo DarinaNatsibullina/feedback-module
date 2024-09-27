@@ -1,0 +1,167 @@
+/* Стили для формы */
+
+.form-container h1 {
+    font-family: 'Proxima Nova', Arial, sans-serif;
+    font-weight: 600;
+}
+
+.input-group label {
+    font-family: 'Proxima Nova', Arial, sans-serif;
+    font-weight: 600;
+}
+
+.form-container {
+    display: none; /* Скрываем форму по умолчанию */
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    box-sizing: border-box;
+    position: fixed;
+    bottom: 80px; /* Расположение над иконкой */
+    right: 20px;
+    z-index: 1000;
+    max-height: 80vh; /* Ограничение высоты формы */
+    overflow-y: auto; /* Вертикальная прокрутка */
+}
+
+.form-container h1 {
+    color: #333; /* Устанавливаем цвет заголовка */
+    margin-bottom: 15px; /* Отступ снизу для заголовка */
+    text-align: left; /* Выровнять заголовок по левому краю */
+}
+
+.input-group label {
+    display: block; /* Изменение на блочный элемент */
+    margin-bottom: 5px; /* Отступ снизу для меток */
+    color: #666;
+    text-align: left; /* Выровнять метки по левому краю */
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea {
+    width: 100%; /* Устанавливаем ширину 100% для всех полей */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Включаем отступы и границы в ширину */
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+button {
+    background-color: #c01633;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #a3132b;
+}
+
+textarea {
+    resize: none;
+    height: 100px;
+}
+
+.close {
+    display: block;
+    text-align: right;
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+}
+
+/* Анимация колец вокруг иконки */
+.ring {
+    position: absolute; /* Абсолютное позиционирование */
+    top: 50%; /* Центрируем по вертикали */
+    left: 50%; /* Центрируем по горизонтали */
+    transform: translate(-50%, -50%); /* Смещаем кольцо, чтобы оно оказалось в центре иконки */
+    border: 5px solid rgba(192, 22, 51, 0.6); /* Новый цвет #c01633 и прозрачность колец */
+    border-radius: 50%; /* Круглая форма */
+    width: 100px; /* Размер колец больше размера иконки */
+    height: 100px; 
+    animation: ringAnimation 1.5s infinite; /* Анимация для колец */
+}
+
+.ring:nth-child(1) {
+    animation-delay: 0s; /* Первая анимация начинается сразу */
+}
+
+.ring:nth-child(2) {
+    animation-delay: 0.3s; /* Вторая анимация задерживается на 0.3 секунды */
+    border-color: rgba(192, 22, 51, 0.4); /* Более прозрачный цвет */
+}
+
+.ring:nth-child(3) {
+    animation-delay: 0.6s; /* Третья анимация задерживается на 0.6 секунд */
+    border-color: rgba(192, 22, 51, 0.2); /* Ещё более прозрачный цвет */
+}
+
+@keyframes ringAnimation {
+    0% {
+        transform: translate(-50%, -50%) scale(0.8); /* Начальный масштаб */
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.1); /* Максимальный масштаб */
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(0.8); /* Возврат к начальному масштабу */
+    }
+}
+
+/* Иконка с анимацией мигания */
+.icon-container {
+    position: fixed;
+    bottom: 60px; /* Увеличиваем отступ снизу на 20px */
+    right: 60px; /* Смещаем иконку влево */
+    z-index: 1000; /* Чтобы иконка была поверх других элементов */
+}
+
+.icon {
+    position: relative; /* Для того, чтобы кольца были привязаны к центру иконки */
+    width: 50px;
+    height: 50px;
+    background-color: #c01633; /* Цвет иконки изменен на #c01633 */
+    border-radius: 50%;
+    animation: blink 1s infinite; /* Анимация мигания */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 500px) {
+    .form-container {
+        width: 90%; /* Ширина для мобильных устройств */
+    }
+}
