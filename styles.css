@@ -1,43 +1,178 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
-    margin: 0;
-    padding: 0;
+    font-family: 'Proxima Nova', Arial, sans-serif; /* Шрифты для текста */
+    font-weight: 600; /* Жирный шрифт */
+    margin: 0; /* Убираем отступы вокруг */
+    padding: 0; /* Убираем внутренние отступы */
+    color: white; /* Цвет текста */
+    background-color: #132041; /* Цвет фона */
+    display: flex; /* Используем flexbox для компоновки */
+    flex-direction: column; /* Вертикальное расположение элементов */
+    justify-content: center; /* Центрируем по вертикали */
+    align-items: center; /* Центрируем по горизонтали */
+    text-align: center; /* Центрируем текст */
 }
-.container {
-    max-width: 600px;
-    margin: 50px auto;
-    background: white;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+.header {
+    display: flex; /* Flexbox для полосы */
+    align-items: center; /* Центрируем элементы по вертикали */
+    justify-content: center; /* Центрируем элементы по горизонтали */
+    background-color: white; /* Цвет фона для полосы */
+    width: 100%; /* Полная ширина полосы */
+    position: relative; /* Позиционирование относительно родителя */
+    padding: 10px; /* Отступы вокруг содержимого */
 }
-h2 {
-    text-align: center;
+
+.logo {
+    max-width: 150px; /* Максимальная ширина логотипа */
+    height: auto; /* Высота подстраивается автоматически */
 }
-form {
-    display: flex;
-    flex-direction: column;
+
+.background {
+    margin: 20px; /* Отступы вокруг */
 }
-label {
-    margin-top: 10px;
+
+h1, h2, h3 {
+    font-family: 'Proxima Nova', Arial, sans-serif; /* Шрифт для заголовков */
+    font-weight: 600; /* Жирный шрифт для заголовков */
 }
-input, textarea, select {
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
+
+p {
+    font-family: 'Proxima Nova', Arial, sans-serif; /* Шрифт для параграфов */
+    font-weight: 600; /* Жирный шрифт для параграфов */
 }
+
+.form-container {
+    display: none; /* Скрываем форму изначально */
+    background: white; /* Цвет фона формы */
+    padding: 20px; /* Отступы внутри формы */
+    border-radius: 8px; /* Скругление углов формы */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень для формы */
+    width: 400px; /* Фиксированная ширина формы */
+    box-sizing: border-box; /* Учитываем границы и отступы в ширине */
+    position: fixed; /* Фиксируем позицию формы */
+    bottom: 80px; /* Расположение над иконкой */
+    right: 20px; /* Расположение справа */
+    z-index: 1000; /* Поверх остальных элементов */
+}
+
+.input-group {
+    position: relative; /* Позиционируем относительно контейнера */
+    margin-bottom: 15px; /* Отступ снизу между группами полей */
+}
+
+.input-group label {
+    display: block; /* Делает метки блочными элементами */
+    margin-bottom: 5px; /* Отступ снизу для меток */
+    color: #666; /* Цвет меток */
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea {
+    width: 100%; /* Ширина 100% для всех полей */
+    padding: 10px; /* Отступы внутри полей */
+    border: 1px solid #ccc; /* Граница полей */
+    border-radius: 5px; /* Скругление углов полей */
+    box-sizing: border-box; /* Учитываем границы и отступы в ширине */
+    transition: border-color 0.3s; /* Плавный переход цвета границы */
+}
+
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+    border-color: #007BFF; /* Цвет границы при фокусе */
+    outline: none; /* Убираем стандартную обводку */
+}
+
 button {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
+    background-color: #c01633; /* Цвет кнопки */
+    color: white; /* Цвет текста на кнопке */
+    border: none; /* Убираем границу кнопки */
+    padding: 10px; /* Отступы внутри кнопки */
+    border-radius: 5px; /* Скругление углов кнопки */
+    cursor: pointer; /* Указатель при наведении */
+    width: 100%; /* Ширина 100% для кнопки */
+    transition: background-color 0.3s; /* Плавный переход цвета кнопки */
 }
+
 button:hover {
-    background-color: #0056b3;
+    background-color: #a3132b; /* Темнее при наведении */
+}
+
+textarea {
+    resize: none; /* Убираем возможность изменения размера */
+    height: 100px; /* Фиксированная высота текстового поля */
+}
+
+.staff-login-button {
+    background-color: #c01633; /* Цвет кнопки для входа */
+    color: white; /* Цвет текста */
+    border: none; /* Убираем границу */
+    padding: 10px 20px; /* Отступы внутри */
+    border-radius: 5px; /* Скругление углов */
+    cursor: pointer; /* Указатель при наведении */
+    margin: 15px auto; /* Центрируем с отступами */
+    width: 200px; /* Фиксированная ширина */
+    display: block; /* Делает кнопку блочной */
+    transition: background-color 0.3s; /* Плавный переход цвета */
+    text-decoration: none; /* Убираем подчеркивание */
+}
+
+.staff-login-button:hover {
+    background-color: #a3132b; /* Темнее при наведении */
+}
+
+.close {
+    display: block; /* Делает кнопку закрытия блочной */
+    text-align: right; /* Выравнивание текста вправо */
+    font-size: 24px; /* Размер шрифта для кнопки закрытия */
+    color: #333; /* Цвет текста кнопки закрытия */
+    cursor: pointer; /* Указатель при наведении */
+}
+
+.card-container {
+    display: flex; /* Flexbox для карточек */
+    flex-wrap: wrap; /* Позволяет карточкам переноситься на новую строку */
+    justify-content: center; /* Центрируем карточки */
+    margin: 20px 0; /* Отступы сверху и снизу */
+}
+
+.card {
+    background-color: #132041; /* Цвет фона карточки */
+    border: 1px solid white; /* Белая граница карточки */
+    border-radius: 12px; /* Скругление углов карточки */
+    padding: 20px; /* Внутренние отступы карточки */
+    margin: 10px; /* Внешние отступы карточки */
+    flex: 0 1 calc(50% - 20px); /* Ширина для двух карточек в ряд */
+    box-sizing: border-box; /* Учитываем границы и отступы в ширине */
+    text-align: left; /* Выравнивание текста по левому краю */
+    width: 200px; /* Фиксированная ширина карточки */
+    height: 200px; /* Фиксированная высота карточки */
+}
+
+.formcontainer {
+    background-color: #f9f9f9; /* Цвет фона формы */
+    padding: 20px; /* Внутренние отступы */
+    border-radius: 8px; /* Скругление углов */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень для формы */
+    margin: 20px auto; /* Центрирование формы */
+    max-width: 400px; /* Максимальная ширина формы */
+}
+
+.formcontainer h1 {
+    color: #132041; /* Цвет заголовка формы */
+    margin-bottom: 15px; /* Отступ снизу для заголовка */
+}
+
+/* Адаптивные стили для маленьких экранов */
+@media (max-width: 800px) {
+    .card {
+        flex: 0 1 calc(100% - 20px); /* Полная ширина карточки на маленьких экранах */
+    }
+}
+
+@media (max-width: 500px) {
+    .form-container {
+        width: 90%; /* Ширина формы для мобильных устройств */
+    }
 }
