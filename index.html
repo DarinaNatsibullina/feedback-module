@@ -1,43 +1,118 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html> 
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Обратная связь</title>
+    <title>Форма обратной связи</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="form-styles.css"> <!-- Стили для формы -->
+    <link href="https://fonts.googleapis.com/css2?family=Proxima+Nova:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h2>Форма обратной связи</h2>
-        <form action="feedback.php" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
+    <header class="header">
+        <img src="img/logo-muiv.svg" alt="Логотип" class="logo">
+    </header>
+    <div class="background">
+        <h1>Демонстрация проекта обратной связи</h1>
+        <p>Этот проект был сделан в рамках работы над выпускной квалификационной работой Дариной Нацибуллиной.</p>
+        
+        <!-- Кнопка для сотрудников -->
+        <a href="login.php" class="staff-login-button">Вход для сотрудников</a>
 
-            <label for="name">Имя:</label>
-            <input type="text" id="name" name="name" required>
+        <div class="icon-container">
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="icon" id="toggleForm">&#128488;</div> <!-- Иконка для открытия формы -->
+        </div>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+        <div class="form-container" id="formContainer">
+            <h1>Свяжитесь с нами</h1>
+            <form id="contactForm" action="submit.php" method="POST" enctype="multipart/form-data">
+                <div class="input-group">
+                    <label for="name">Ваше имя</label>
+                    <input type="text" id="name" name="name" required> <!-- Поле для имени -->
+                </div>
+                <div class="input-group">
+                    <label for="surname">Ваша фамилия</label>
+                    <input type="text" id="surname" name="surname" required> <!-- Поле для фамилии -->
+                </div>
+                <div class="input-group">
+                    <label for="email">Ваш Email</label>
+                    <input type="email" id="email" name="email" required> <!-- Поле для Email -->
+                </div>
+                <div class="input-group">
+                    <label for="subject">Тема обращения</label>
+                    <select id="subject" name="subject" required>
+                        <option value="">Выберите тему</option>
+                        <option value="admission">Заявка на поступление</option>
+                        <option value="exams">Приемная комиссия и вступительные экзамены</option>
+                        <option value="programs">Образовательные программы</option>
+                        <option value="finance">Финансовые вопросы и стипендии</option>
+                        <option value="university_life">Жизнь в университете</option>
+                        <option value="administrative">Административные вопросы</option>
+                        <option value="international_students">Международные студенты</option>
+                        <option value="other">Другие вопросы</option>
+                    </select> <!-- Выпадающий список тем обращения -->
+                </div>
+                <div class="input-group" id="phoneGroup" style="display: none;">
+                    <label for="phone">Ваш телефон</label>
+                    <input type="tel" id="phone" name="phone"> <!-- Поле для телефона, скрыто по умолчанию -->
+                </div>
+                <div class="input-group">
+                    <label for="message">Ваше сообщение</label>
+                    <textarea id="message" name="message" required></textarea> <!-- Поле для сообщения -->
+                </div>
+                <div class="input-group">
+                    <label for="file">Прикрепить файл (опционально)</label>
+                    <input type="file" id="file" name="file"> <!-- Поле для загрузки файла -->
+                </div>
+                <button type="submit">Отправить сообщение</button> <!-- Кнопка отправки сообщения -->
+                <span class="close" id="closeForm">&times;</span> <!-- Кнопка закрытия формы -->
+            </form>
+        </div>
 
-            <label for="phone">Телефон:</label>
-            <input type="tel" id="phone" name="phone" required>
+        <h2>Функции, которые были разработаны</h2>
+        <div class="card-container">
+            <div class="card">
+                <h3>Обратная связь</h3>
+                <p>Можно отправлять сообщения прямо через форму, что делает общение проще.</p>
+            </div>
+            <div class="card">
+                <h3>Прикрепление файлов</h3>
+                <p>Пользователи могут добавлять файлы к своим сообщениям для лучшего объяснения.</p>
+            </div>
+            <div class="card">
+                <h3>Аналитика</h3>
+                <p>Инструменты для отслеживания и анализа сообщений, что помогает улучшить сервис.</p>
+            </div>
+            <div class="card">
+                <h3>Разделение по темам</h3>
+                <p>Можно выбрать тему обращения, что упрощает обработку запросов.</p>
+            </div>
+        </div>
 
-            <label for="topic">Тема обращения:</label>
-            <select id="topic" name="topic" required>
-                <option value="admission">Поступление</option>
-                <option value="education">Учебный процесс</option>
-                <option value="accommodation">Общежитие</option>
-                <option value="scholarships">Стипендии</option>
-                <option value="other">Другое</option>
-            </select>
-
-            <label for="message">Сообщение:</label>
-            <textarea id="message" name="message" rows="6" required></textarea>
-
-            <label for="attachment">Прикрепить файл:</label>
-            <input type="file" id="attachment" name="attachment">
-
-            <button type="submit">Отправить</button>
-        </form>
+        <h2>Преимущества использования данной формы</h2>
+        <div class="card-container">
+            <div class="card">
+                <h3>Удобство</h3>
+                <p>Форма обратной связи, доступная в любое время и очень простая в использовании.</p>
+            </div>
+            <div class="card">
+                <h3>Экономия времени</h3>
+                <p>Упрощает отправку сообщений и получение ответов.</p>
+            </div>
+            <div class="card">
+                <h3>Улучшение обслуживания</h3>
+                <p>Позволяет лучше понимать потребности пользователей и быстро реагировать на запросы.</p>
+            </div>
+            <div class="card">
+                <h3>Анализ данных</h3>
+                <p>Сбор информации для улучшения сервиса и повышения его качества.</p>
+            </div>
+        </div>
     </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
