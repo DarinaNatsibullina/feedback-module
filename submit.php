@@ -21,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = htmlspecialchars(trim($_POST['email']));
     $message = htmlspecialchars(trim($_POST['message']));
     $phone = isset($_POST['phone']) ? htmlspecialchars(trim($_POST['phone'])) : null; // Получаем телефон, если он есть
+    $newsletter = isset($_POST['newsletter']) ? 1 : 0; // Получаем значение чекбокса рассылки
 
     // Проверка на пустые поля
     if (empty($name) || empty($surname) || empty($subject) || empty($email) || empty($message)) {
@@ -34,23 +35,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // Обработка загруженного файла (если он есть)
-    $fileName = null; // Изначально имя файла равно null
-    if (isset($_FILES['file']) && $_FILES['file']['error'] === 0) {
-        $fileName = $_FILES['file']['name'];
-        $fileTmpName = $_FILES['file']['tmp_name'];
+    // Обработка загруженного файла
+    $fileName = $_FILES['file']['name'];
+    $fileTmpName = $_FILES['file']['tmp_name'];
+    $fileError = $_FILES['file']['error'];
 
-        // Указываем директорию для загрузки
-        $filePath = 'uploads/' . basename($fileName);
-        if (!move_uploaded_file($fileTmpName, $filePath)) {
+    if ($fileError === 0) {
+        $fileDestination = 'uploads/' . basename($fileName);
+        if (move_uploaded_file($fileTmpName, $fileDestination)) {
+            echo "Файл успешно загружен!";
+        } else {
             echo "Ошибка при загрузке файла.";
-            exit;
         }
+    } else {
+        echo "Ошибка загрузки файла: " . $fileError;
     }
 
-    // Подготовка SQL-запроса с учетом имени, фамилии, темы обращения и телефона
-    $stmt = $conn->prepare("INSERT INTO feedback (name, surname, subject, email, message, phone, file_name) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssss", $name, $surname, $subject, $email, $message, $phone, $fileName);
+
+    // Подготовка SQL-запроса с учетом имени, фамилии, темы обращения, телефона и рассылки
+    $stmt = $conn->prepare("INSERT INTO feedback (name, surname, subject, email, message, phone, file_name, newsletter) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssssssi", $name, $surname, $subject, $email, $message, $phone, $fileName, $newsletter);
 
     // Выполнение запроса
     if ($stmt->execute()) {
