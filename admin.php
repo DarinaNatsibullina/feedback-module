@@ -213,6 +213,8 @@ $subject_labels = [
                 ?>
             </div>
         <?php endif; ?>
+        <!-- Кнопка выхода -->
+        <a href="logout.php" class="btn">Выйти</a>
     </div>
 </body>
 </html>
