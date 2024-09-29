@@ -104,6 +104,28 @@ textarea {
     height: 100px; /* Фиксированная высота текстового поля */
 }
 
+.message {
+    margin-top: 20px;
+    font-size: 24px;
+}
+
+.urgent-contact, .social-media {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.iconsc {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.iconc {
+    width: 30px;
+    height: 30px;
+    margin: 0 10px;
+}
+
 .staff-login-button {
     background-color: #c01633; /* Цвет кнопки для входа */
     color: white; /* Цвет текста */
@@ -163,6 +185,7 @@ textarea {
     color: #132041; /* Цвет заголовка формы */
     margin-bottom: 15px; /* Отступ снизу для заголовка */
 }
+
 
 /* Адаптивные стили для маленьких экранов */
 @media (max-width: 800px) {
