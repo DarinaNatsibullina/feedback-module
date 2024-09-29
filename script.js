@@ -1,13 +1,36 @@
-document.getElementById('toggleForm').addEventListener('click', function () {
-    const formContainer = document.getElementById('formContainer');
-    formContainer.style.display = formContainer.style.display === 'block' ? 'none' : 'block';
+// Функция для открытия/закрытия формы
+document.getElementById("toggleForm").addEventListener("click", function () {
+    var formContainer = document.getElementById("formContainer");
+    formContainer.style.display = formContainer.style.display === "block" ? "none" : "block";
 });
 
-document.getElementById('closeForm').addEventListener('click', function () {
-    const formContainer = document.getElementById('formContainer');
-    formContainer.style.display = 'none';
+// Закрытие формы по клику на крестик
+document.getElementById("closeForm").addEventListener("click", function () {
+    document.getElementById("formContainer").style.display = "none";
 });
 
+// Обработчик изменения темы обращения
+document.getElementById('subject').addEventListener('change', function() {
+    const phoneGroup = document.getElementById('phoneGroup');
+    if (this.value === 'admission') {
+        phoneGroup.style.display = 'block'; // Показываем поле для телефона
+    } else {
+        phoneGroup.style.display = 'none'; // Скрываем поле для телефона
+    }
+});
+
+// Проверка максимального веса файла
+document.getElementById('file').addEventListener('change', function() {
+    var file = this.files[0]; // Получаем файл
+    var maxSize = 5 * 1024 * 1024; // 5 MB в байтах
+
+    if (file && file.size > maxSize) {
+        alert('Размер файла превышает 5 МБ. Пожалуйста, выберите файл меньшего размера.');
+        this.value = ''; // Очищаем поле загрузки
+    }
+});
+    
+// Основная обработка формы
 document.getElementById('contactForm').addEventListener('submit', function (event) {
     event.preventDefault();
     
@@ -37,15 +60,47 @@ document.getElementById('contactForm').addEventListener('submit', function (even
         return;
     }
 
-    this.submit(); // Отправка формы, если все проверки пройдены
-});
+    // AJAX отправка формы
+    var formData = new FormData(this); // Собираем данные формы
 
-// Обработчик изменения темы обращения
-document.getElementById('subject').addEventListener('change', function() {
-    const phoneGroup = document.getElementById('phoneGroup');
-    if (this.value === 'admission') {
-        phoneGroup.style.display = 'block'; // Показываем поле для телефона
-    } else {
-        phoneGroup.style.display = 'none'; // Скрываем поле для телефона
-    }
+    // Отправка данных через AJAX
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "submit.php", true);
+    xhr.onload = function () {
+        var responseContainer = document.createElement("div"); // Контейнер для сообщения
+        responseContainer.classList.add("message");
+
+        if (xhr.status === 200) {
+            // Если ответ успешный
+            responseContainer.innerHTML = `
+                <h3 style="color:green;font-size:40px">&#128077; Отправлено!</h3>
+                <p style="color: #132041;font-size:20px">Для срочных вопросов к приёмной комиссии, вы можете связаться с нами через WhatsApp <a href="https://wa.me/74950330363"><img src="img/whatsapp.svg" alt="WhatsApp" class="iconc" style="filter: invert(30%) sepia(15%) saturate(500%) hue-rotate(200deg) brightness(100%) contrast(100%);"></a></p>
+                <p style="color: #132041;font-size:20px">Присоединяйтесь к нашим социальным сетям и погружайтесь в увлекательную университетскую жизнь!</p>
+                <div class="iconsc">
+                    <a href="https://vk.com/mosvitte"><img src="img/vk.svg" alt="VK" class="iconc" style="filter: invert(30%) sepia(15%) saturate(500%) hue-rotate(200deg) brightness(100%) contrast(100%);"></a>
+                    <a href="https://t.me/mosvitte"><img src="img/tg.svg" alt="Telegram" class="iconc" style="filter: invert(30%) sepia(15%) saturate(500%) hue-rotate(200deg) brightness(100%) contrast(100%);"></a>
+                    <a href="https://www.youtube.com/@muiv_moscow"><img src="img/yt.svg" alt="YouTube" class="iconc" style="filter: invert(30%) sepia(15%) saturate(500%) hue-rotate(200deg) brightness(100%) contrast(100%);"></a>
+                </div>
+            `;
+        } else {
+            // Если произошла ошибка
+            responseContainer.innerHTML = `
+                <h3 style="color:red;font-size:40px">&#128078; Ошибка!</h3>
+                <p style="color: #132041;font-size:20px">Для срочных вопросов к приёмной комиссии, вы можете связаться с нами через WhatsApp <a href="https://wa.me/74950330363"><img src="img/whatsapp.svg" alt="WhatsApp" class="iconc" style="filter: invert(30%) sepia(15%) saturate(500%) hue-rotate(200deg) brightness(100%) contrast(100%);"></a></p>
+                <p style="color: #132041;font-size:20px">Присоединяйтесь к нашим социальным сетям и погружайтесь в увлекательную университетскую жизнь!</p>
+                <div class="iconsc">
+                    <a href="https://vk.com/mosvitte"><img src="img/vk.svg" alt="VK" class="iconc" style="filter: invert(30%) sepia(15%) saturate(500%) hue-rotate(200deg) brightness(100%) contrast(100%);"></a>
+                    <a href="https://t.me/mosvitte"><img src="img/tg.svg" alt="Telegram" class="iconc" style="filter: invert(30%) sepia(15%) saturate(500%) hue-rotate(200deg) brightness(100%) contrast(100%);"></a>
+                    <a href="https://www.youtube.com/@muiv_moscow"><img src="img/yt.svg" alt="YouTube" class="iconc" style="filter: invert(30%) sepia(15%) saturate(500%) hue-rotate(200deg) brightness(100%) contrast(100%);"></a>
+                </div>
+            `;
+        }
+
+        // Очищаем форму и показываем сообщение
+        document.getElementById("contactForm").reset();
+        document.getElementById("formContainer").innerHTML = "";
+        document.getElementById("formContainer").appendChild(responseContainer);
+    };
+
+    xhr.send(formData); // Отправляем данные формы
 });
