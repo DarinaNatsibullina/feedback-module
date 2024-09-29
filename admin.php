@@ -145,8 +145,26 @@ $subject_labels = [
             <div class="analytics">
                 <?php
                 // Анализ по датам
-                $sql_analytics = "SELECT DATE(created_at) AS date, COUNT(*) AS count FROM feedback GROUP BY DATE(created_at)";
+                // Установка переменных для пагинации аналитики по датам
+                $analytics_limit = 7; // Количество дат на странице
+                $analytics_page = isset($_GET['analytics_page']) ? (int)$_GET['analytics_page'] : 1;
+                $analytics_offset = ($analytics_page - 1) * $analytics_limit;
+
+                // Анализ по датам с пагинацией
+                $sql_analytics = "SELECT DATE(created_at) AS date, COUNT(*) AS count 
+                  FROM feedback 
+                  GROUP BY DATE(created_at) 
+                  ORDER BY DATE(created_at) DESC 
+                  LIMIT $analytics_limit OFFSET $analytics_offset";
                 $result_analytics = $conn->query($sql_analytics);
+
+                // Получаем общее количество дат для расчета количества страниц аналитики
+                $sql_analytics_count = "SELECT COUNT(DISTINCT DATE(created_at)) AS total_dates FROM feedback";
+                $result_analytics_count = $conn->query($sql_analytics_count);
+                $data_analytics_count = $result_analytics_count->fetch_assoc();
+                $total_dates = $data_analytics_count['total_dates'];
+                $total_analytics_pages = ceil($total_dates / $analytics_limit); // Общее количество страниц для аналитики
+
 
                 // Анализ по темам
                 $sql_subject_analytics = "SELECT subject, COUNT(*) AS count FROM feedback GROUP BY subject";
@@ -172,17 +190,32 @@ $subject_labels = [
                     7 => 'Суббота'
                 ];
 
-                echo "<p>Всего сообщений: " . $total_messages . "</p>";
-                echo "<h3>Сообщения по датам:</h3>";
-                echo "<ul>";
-                if ($result_analytics->num_rows > 0) {
-                    while ($row = $result_analytics->fetch_assoc()) {
-                        echo "<li>" . $row['date'] . ": " . $row['count'] . " сообщений</li>";
-                    }
-                } else {
-                    echo "<li>Нет данных</li>";
-                }
-                echo "</ul>";
+                // Отображение анализа по датам с пагинацией
+echo "<h3>Сообщения по датам:</h3>";
+echo "<ul>";
+if ($result_analytics->num_rows > 0) {
+    while ($row = $result_analytics->fetch_assoc()) {
+        echo "<li>" . $row['date'] . ": " . $row['count'] . " сообщений</li>";
+    }
+} else {
+    echo "<li>Нет данных</li>";
+}
+echo "</ul>";
+
+// Пагинация для аналитики по датам
+echo '<div class="pagination">';
+if ($analytics_page > 1) {
+    echo '<a href="?analytics_page=' . ($analytics_page - 1) . '">&laquo; Назад</a>';
+}
+
+for ($i = 1; $i <= $total_analytics_pages; $i++) {
+    echo '<a href="?analytics_page=' . $i . '" class="' . ($i === $analytics_page ? 'active' : '') . '">' . $i . '</a>';
+}
+
+if ($analytics_page < $total_analytics_pages) {
+    echo '<a href="?analytics_page=' . ($analytics_page + 1) . '">Вперёд &raquo;</a>';
+}
+echo '</div>';
 
                 // Вывод количества сообщений по темам
                 echo "<h3>Сообщения по темам:</h3>";
