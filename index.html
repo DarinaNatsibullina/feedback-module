@@ -64,9 +64,20 @@
                     <textarea id="message" name="message" required></textarea> <!-- Поле для сообщения -->
                 </div>
                 <div class="input-group">
-                    <label for="file">Прикрепить файл (опционально)</label>
+                    <label for="file">Прикрепить файл (если требуется)</label>
                     <input type="file" id="file" name="file"> <!-- Поле для загрузки файла -->
+                    </div>
+                
+                <!-- Галочки согласия -->
+                <div class="input-group">
+                    <input type="checkbox" id="consent" name="consent" required>
+                    <label for="consent">Нажимая на кнопку, я даю согласие на обработку моих персональных данных</label>
                 </div>
+                <div class="input-group">
+                    <input type="checkbox" id="newsletter" name="newsletter">
+                    <label for="newsletter">Нажимая на кнопку, я даю согласие на получение рассылки рекламно-информационных материалов</label>
+                </div>
+                
                 <button type="submit">Отправить сообщение</button> <!-- Кнопка отправки сообщения -->
                 <span class="close" id="closeForm">&times;</span> <!-- Кнопка закрытия формы -->
             </form>
